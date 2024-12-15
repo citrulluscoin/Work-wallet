@@ -1,0 +1,53 @@
+<meta name='viewport' content='width=device-width, initial-scale=1'/><!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Open Work Wallet</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 20px;
+      background-color: #f5f5f5;
+    }
+    h1 {
+      color: #7b1fa2;
+    }
+    .button {
+      padding: 15px 30px;
+      background-color: #9c27b0;
+      color: white;
+      font-size: 18px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .button:hover {
+      background-color: #8e24aa;
+    }
+  </style>
+</head>
+<body>
+  <h1>Welcome to Work Wallet</h1>
+  <p>Click the button below to open the Work Wallet application:</p>
+  
+  <!-- Button to Open the App -->
+  <button class="button" onclick="openApp()">Open Work Wallet</button>
+
+  <script>
+    function openApp() {
+      var appScheme = "workwallet://"; // Custom scheme for your app
+      var playStoreLink = "https://play.google.com/store/apps/details?id=com.yourapp"; // Your app's Play Store link
+
+      // Try opening the app with the custom scheme
+      window.location.href = appScheme;
+
+      // If the app isn't installed, open the Play Store after a delay
+      setTimeout(function() {
+        window.location.href = playStoreLink;
+      }, 2000); // 2 seconds delay before redirecting to Play Store
+    }
+  </script>
+</body>
+</html>

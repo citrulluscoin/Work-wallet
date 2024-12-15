@@ -1,0 +1,227 @@
+<meta name='viewport' content='width=device-width, initial-scale=1'/><!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Work Wallet</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* Add your custom styles here */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f5f5f5; /* Default background color */
+    }
+    .container {
+      width: 100%;
+      max-width: 500px;
+      margin: 20px auto;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Purple Theme for login and sign-up */
+    #login-container, #signup-container {
+      background-color: #7b1fa2; /* Purple background */
+      color: white;
+    }
+
+    #login-container h1, #signup-container h1 {
+      text-align: center;
+      color: white;
+    }
+
+    #login-container a, #signup-container a {
+      color: #d1c4e9; /* Lighter shade of purple for links */
+    }
+
+    #login-container button, #signup-container button {
+      background-color: #9c27b0; /* Button color (purple) */
+    }
+
+    #login-container button:hover, #signup-container button:hover {
+      background-color: #8e24aa; /* Darker purple on hover */
+    }
+
+    .logo {
+      width: 100px;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+    }
+
+    h1, h2 {
+      text-align: center;
+    }
+
+    input[type="text"], input[type="password"], input[type="number"], textarea {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    .wallet-info {
+      margin-bottom: 20px;
+    }
+
+    .transaction-form {
+      margin-top: 20px;
+    }
+
+    #signup-container, #mainpage-container {
+      display: none;
+    }
+
+    /* Peach theme for the main page */
+    #mainpage-container {
+      background-color: #ffebcd; /* Peach background */
+      color: #333; /* Dark text for readability */
+    }
+
+  </style>
+</head>
+<body>
+  <!-- Login and Sign Up Form -->
+  <div class="container" id="login-container">
+    <h1>Work Wallet Login</h1>
+    <img src="file:///storage/emulated/0/Pictures/file-6ZoFz1UUg4HjU7P6Worn2P.webp" alt="Work Token Logo" class="logo">
+    <form id="login-form">
+      <input type="text" id="username" placeholder="Enter Username" required>
+      <input type="password" id="password" placeholder="Enter Password" required>
+      <button type="submit">Login</button>
+    </form>
+    <p>Don't have an account? <a href="javascript:void(0);" id="show-signup">Sign Up</a></p>
+  </div>
+
+  <!-- Sign Up Form -->
+  <div class="container" id="signup-container" style="display:none;">
+    <h1>Work Wallet Sign Up</h1>
+    <img src="file:///storage/emulated/0/Pictures/file-6ZoFz1UUg4HjU7P6Worn2P.webp" alt="Work Token Logo" class="logo">
+    <form id="signup-form">
+      <input type="text" id="new-username" placeholder="Enter Username" required>
+      <input type="password" id="new-password" placeholder="Enter Password" required>
+      <button type="submit">Sign Up</button>
+    </form>
+    <p>Already have an account? <a href="javascript:void(0);" id="show-login">Login</a></p>
+  </div>
+
+  <!-- Main Page after Login -->
+  <div class="container" id="mainpage-container" style="display:none;">
+    <h1>Welcome to Work Wallet</h1>
+    <img src="file:///storage/emulated/0/Pictures/file-6ZoFz1UUg4HjU7P6Worn2P.webp" alt="Work Token Logo" class="logo">
+
+    <!-- Wallet Info Section -->
+    <div class="wallet-info">
+      <h2>Your Wallet Info</h2>
+      <div class="wallet-address">
+        <span><strong>Wallet Address:</strong> <span id="walletAddress">0x1234...abcd</span></span>
+        <button onclick="copyWalletAddress()">Copy Address</button>
+      </div>
+      <div class="wallet-balance">
+        <span><strong>Balance:</strong> <span id="walletBalance">$0.00</span></span>
+        <button onclick="checkBalance()">Check Balance</button>
+      </div>
+    </div>
+
+    <!-- Transaction Form -->
+    <div class="transaction-form">
+      <h2>Make a Transaction</h2>
+      <form id="transactionForm">
+        <input type="text" id="recipientAddress" placeholder="Recipient Wallet Address" required>
+        <input type="number" id="amount" placeholder="Amount" required>
+        <textarea id="transactionMessage" placeholder="Transaction Message"></textarea>
+        <button type="submit">Send Transaction</button>
+      </form>
+    </div>
+
+    <button onclick="logout()">Logout</button>
+  </div>
+
+  <script>
+    let users = [];
+    let loggedInUser = null;
+
+    document.getElementById('show-signup').addEventListener('click', () => {
+      document.getElementById('login-container').style.display = 'none';
+      document.getElementById('signup-container').style.display = 'block';
+    });
+
+    document.getElementById('show-login').addEventListener('click', () => {
+      document.getElementById('signup-container').style.display = 'none';
+      document.getElementById('login-container').style.display = 'block';
+    });
+
+    document.getElementById('signup-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      let username = document.getElementById('new-username').value;
+      let password = document.getElementById('new-password').value;
+
+      // Save user data to local array
+      users.push({ username, password, walletAddress: '0x' + Math.random().toString(36).substring(2, 15) });
+      
+      alert('Sign Up Successful! You can now login.');
+      document.getElementById('signup-container').style.display = 'none';
+      document.getElementById('login-container').style.display = 'block';
+    });
+
+    document.getElementById('login-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      let username = document.getElementById('username').value;
+      let password = document.getElementById('password').value;
+
+      loggedInUser = users.find(user => user.username === username && user.password === password);
+
+      if (loggedInUser) {
+        document.getElementById('login-container').style.display = 'none';
+        document.getElementById('mainpage-container').style.display = 'block';
+        document.getElementById('walletAddress').textContent = loggedInUser.walletAddress;
+      } else {
+        alert('Invalid username or password');
+      }
+    });
+
+    function checkBalance() {
+      alert('Checking balance...');
+      // Implement logic to check balance (For now, using dummy data)
+      document.getElementById('walletBalance').textContent = '$100.00';
+    }
+
+    function copyWalletAddress() {
+      let walletAddress = document.getElementById('walletAddress').textContent;
+      navigator.clipboard.writeText(walletAddress);
+      alert('Wallet address copied to clipboard');
+    }
+
+    function logout() {
+      loggedInUser = null;
+      document.getElementById('mainpage-container').style.display = 'none';
+      document.getElementById('login-container').style.display = 'block';
+    }
+
+    document.getElementById('transactionForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      alert('Transaction sent!');
+      // Implement transaction logic here
+    });
+  </script>
+</body>
+</html>

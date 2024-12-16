@@ -1,0 +1,66 @@
+<meta name='viewport' content='width=device-width, initial-scale=1'/><!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Work Wallet</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Your Wallet Code and Website Content -->
+  <div class="container" id="login-container">
+    <h1>Work Wallet Login</h1>
+    <img src="images/logo.webp" alt="Work Token Logo" class="logo">
+    <form id="login-form">
+      <input type="text" id="username" placeholder="Enter Username" required>
+      <input type="password" id="password" placeholder="Enter Password" required>
+      <button type="submit">Login</button>
+    </form>
+    <p>Don't have an account? <a href="javascript:void(0);" id="show-signup">Sign Up</a></p>
+  </div>
+
+  <div class="container" id="signup-container" style="display:none;">
+    <h1>Work Wallet Sign Up</h1>
+    <img src="images/logo.webp" alt="Work Token Logo" class="logo">
+    <form id="signup-form">
+      <input type="text" id="new-username" placeholder="Enter Username" required>
+      <input type="password" id="new-password" placeholder="Enter Password" required>
+      <button type="submit">Sign Up</button>
+    </form>
+    <p>Already have an account? <a href="javascript:void(0);" id="show-login">Login</a></p>
+  </div>
+
+  <div class="container" id="mainpage-container" style="display:none;">
+    <h1>Welcome to Work Wallet</h1>
+    <img src="images/logo.webp" alt="Work Token Logo" class="logo">
+
+    <!-- Wallet Info Section -->
+    <div class="wallet-info">
+      <h2>Your Wallet Info</h2>
+      <div class="wallet-address">
+        <span><strong>Wallet Address:</strong> <span id="walletAddress">0x1234...abcd</span></span>
+        <button onclick="copyWalletAddress()">Copy Address</button>
+      </div>
+      <div class="wallet-balance">
+        <span><strong>Balance:</strong> <span id="walletBalance">$0.00</span></span>
+        <button onclick="checkBalance()">Check Balance</button>
+      </div>
+    </div>
+
+    <!-- Transaction Form -->
+    <div class="transaction-form">
+      <h2>Make a Transaction</h2>
+      <form id="transactionForm">
+        <input type="text" id="recipientAddress" placeholder="Recipient Wallet Address" required>
+        <input type="number" id="amount" placeholder="Amount" required>
+        <textarea id="transactionMessage" placeholder="Transaction Message"></textarea>
+        <button type="submit">Send Transaction</button>
+      </form>
+    </div>
+
+    <button onclick="logout()">Logout</button>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

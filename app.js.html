@@ -1,0 +1,65 @@
+<meta name='viewport' content='width=device-width, initial-scale=1'/><script>let users = [];
+let loggedInUser = null;
+
+document.getElementById('show-signup').addEventListener('click', () => {
+  document.getElementById('login-container').style.display = 'none';
+  document.getElementById('signup-container').style.display = 'block';
+});
+
+document.getElementById('show-login').addEventListener('click', () => {
+  document.getElementById('signup-container').style.display = 'none';
+  document.getElementById('login-container').style.display = 'block';
+});
+
+document.getElementById('signup-form').addEventListener('submit', (e) => {
+  e.preventDefault();
+  let username = document.getElementById('new-username').value;
+  let password = document.getElementById('new-password').value;
+
+  // Save user data to local array
+  users.push({ username, password, walletAddress: '0x' + Math.random().toString(36).substring(2, 15) });
+
+  alert('Sign Up Successful! You can now login.');
+  document.getElementById('signup-container').style.display = 'none';
+  document.getElementById('login-container').style.display = 'block';
+});
+
+document.getElementById('login-form').addEventListener('submit', (e) => {
+  e.preventDefault();
+  let username = document.getElementById('username').value;
+  let password = document.getElementById('password').value;
+
+  loggedInUser = users.find(user => user.username === username && user.password === password);
+
+  if (loggedInUser) {
+    document.getElementById('login-container').style.display = 'none';
+    document.getElementById('mainpage-container').style.display = 'block';
+    document.getElementById('walletAddress').textContent = loggedInUser.walletAddress;
+  } else {
+    alert('Invalid username or password');
+  }
+});
+
+function checkBalance() {
+  alert('Checking balance...');
+  // Implement logic to check balance (For now, using dummy data)
+  document.getElementById('walletBalance').textContent = '$100.00';
+}
+
+function copyWalletAddress() {
+  let walletAddress = document.getElementById('walletAddress').textContent;
+  navigator.clipboard.writeText(walletAddress);
+  alert('Wallet address copied to clipboard');
+}
+
+function logout() {
+  loggedInUser = null;
+  document.getElementById('mainpage-container').style.display = 'none';
+  document.getElementById('login-container').style.display = 'block';
+}
+
+document.getElementById('transactionForm').addEventListener('submit', (e) => {
+  e.preventDefault();
+  alert('Transaction sent!');
+  // Implement transaction logic here
+});</script>
